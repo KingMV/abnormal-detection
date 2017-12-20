@@ -13,6 +13,8 @@ from keras import Sequential
 
 import numpy as np
 
+#The layer which return sign of input value
+#Layer trả về dấu của giá trị input
 class Sign(Layer):
     def __init__(self, **kwargs):
         super(Sign, self).__init__(**kwargs)
@@ -26,8 +28,8 @@ class Sign(Layer):
     def compute_output_shape(self, input_shape):
         return input_shape
 
+#Deep-one class model
 def DOC(training = False):
-    
     inp = Input(shape=(32,32,3))
     ##############################################
     # CNN part
@@ -46,21 +48,6 @@ def DOC(training = False):
     doc1 = Dense(units=1, name="doc_doc1")(drop1)
     sign1 = Sign(name="doc_sign1")(doc1)
     model = Model(inputs=inp, outputs=sign1)
-    
-    '''
-
-    model = Sequential()
-    model.add(Conv2D(filters=32, kernel_size=(5,5), name="cnn_conv1", input_shape=(32,32,3)))
-    model.add(Activation('relu', name="cnn_relu1"))
-    model.add(MaxPool2D(pool_size=(2, 2), name="cnn_pool1"))
-    model.add(Conv2D(filters=64, kernel_size=(5,5), name="cnn_conv2"))
-    model.add(MaxPool2D(pool_size=(2, 2), name="cnn_pool2"))
-    model.add(Flatten(name="cnn_flat1"))
-    model.add(Dense(units=256, activation='relu', name="cnn_dense1"))
-    model.add(Dropout(rate=0.5, name="cnn_drop1"))
-    '''
-
-
 
     ###############################################
     # Add loss
@@ -70,6 +57,11 @@ def DOC(training = False):
 
     return model
 
+#Loss model
+#We use regularize in order to implement the objective function in paper
+#Note: we don't use RBF kernel
+#Chúng ta sử dụng regularize để cài đặt hàm objective theo bài báo
+#Note: nhóm không sử dụng RBF kernel
 def add_loss(model):
     loss = K.variable(0.0)
 

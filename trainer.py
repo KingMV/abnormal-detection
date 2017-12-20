@@ -8,10 +8,20 @@ import time
 import utils
 from data_generator import DataGenerator
 
+#Dummy loss, we didn't use it in real
+#Instead of, we use regularize
+#Dummy loss, nhưng thực tế chúng ta không sử dụng độ lỗi này
+#Thay vào đó chúng ta sử dụng regularize
 def dummy_loss(y_true, y_pred):
     zero = K.variable(0.0)
     return zero
 
+#Train DOC model with dataset
+#Input: batch_path: dataset path
+#Weights file will be save in doc.h5
+#Huấn luyện DOC model
+#Input: batch_path: đường dẫn tới tập ảnh batch
+#Trọng số học được lưu vào file doc.h5
 def train(batch_path):
     #Get dataset ids
     X, Y = utils.get_dataset(batch_path)

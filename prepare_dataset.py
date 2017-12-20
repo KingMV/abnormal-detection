@@ -5,6 +5,13 @@ from os.path import isfile, exists, splitext
 import sys
 from utils import *
 
+###########################################################################
+# These code are used for preparing training dataset
+# Các đoạn code này dùng để chuẩn bị dữ liệu training
+###########################################################################
+
+#Calculating LK optical flow of UCSDpred1 dataset
+#Tính LK optical flow trên toàn tập UCSDpred1
 def cal_optical_flow(ucsd_pred1_link, output_link):
     #Checking if output_link is not exist, create ouput folder
     #Kiểm tra folder output có tồn tại không, nếu không thì tạo folder output
@@ -43,7 +50,8 @@ def cal_optical_flow(ucsd_pred1_link, output_link):
                 bgr = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
                 cv2.imwrite(fout, bgr)
 
-
+#Create patches from optical flow images
+#Tạo các patch từ các ảnh optical flow
 def create_patch(uscd_pred1_optical_flow, output_link):
     #Checking if output_link is not exist, create ouput folder
     #Kiểm tra folder output có tồn tại không, nếu không thì tạo folder output
@@ -92,6 +100,8 @@ def create_patch(uscd_pred1_optical_flow, output_link):
 
                         cv2.imwrite(fout, bgr)
 
+#Delete white images, keep only one
+#Xóa các ảnh trắng, chỉ giữ lại 1 mẫu
 def del_white(batch_path):
     is_first = True
     for i in range(1, 35):
@@ -110,6 +120,8 @@ def del_white(batch_path):
                         remove(fname)
                         print("Removed: ", fname)
 
+#Move all dataset in one folder and rename them
+#Chuyển toàn bộ dataset về một thư mục và đổi tên các mẫu
 def rename_and_move(batch_path, folder_out):
     list_file = []
     #Get files path
@@ -133,9 +145,9 @@ def rename_and_move(batch_path, folder_out):
     
 
 if __name__ == '__main__':
-    #cal_optical_flow("../UCSDped1/Train", "../UCSDped1/Train_")
-    #create_patch("../UCSDped1/Train_", "../UCSDped1/TrainBatch")
-    #del_white('../UCSDped1/TrainBatch')
+    cal_optical_flow("../UCSDped1/Train", "../UCSDped1/Train_")
+    create_patch("../UCSDped1/Train_", "../UCSDped1/TrainBatch")
+    del_white('../UCSDped1/TrainBatch')
     rename_and_move('../UCSDped1/TrainBatch', '../UCSDped1/TrainBatch')
 
     print("Done")
